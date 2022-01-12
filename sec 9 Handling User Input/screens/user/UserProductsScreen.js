@@ -17,9 +17,7 @@ const UserProductsScreen = (props) => {
   };
 
   const deleteHandler = (id) => {
-    Alert.alert(
-      "Are you sure?",
-      "Do you really want to delete this item?",
+    Alert.alert("Are you sure?", "Do you really want to delete this item?", [
       {
         text: "No",
         style: "default",
@@ -30,8 +28,8 @@ const UserProductsScreen = (props) => {
         onPress: () => {
           dispatch(productsActions.deleteProduct(id));
         },
-      }
-    );
+      },
+    ]);
   };
 
   return (
