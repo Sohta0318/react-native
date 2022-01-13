@@ -8,12 +8,14 @@ import ordersReducer from "./store/reducers/orders";
 import productsReducer from "./store/reducers/products";
 import { useState } from "react";
 import ReduxThunk from "redux-thunk";
+import authReducer from "./store/reducers/auth";
 // import { composeWithDevTools } from "redux-devtools-extension";
 
 const rootReducer = combineReducers({
   products: productsReducer,
   cart: cartReducer,
   orders: ordersReducer,
+  auth: authReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
