@@ -1,14 +1,77 @@
-import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React, { useState, useCallback, useEffect } from "react";
+import { StyleSheet, TouchableOpacity, Platform, Text } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import Colors from "../constants/Colors";
 
-const MapScreen = () => {
+const MapScreen = (props) => {
+  const [selectedLocation, setSelectedLocation] = useState();
+  const mapRegion = {
+    latitude: 37.78,
+    longitude: -122.43,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  };
+  const selectLocationHandler = (e) => {
+    setSelectedLocation({
+      lat: e.nativeEvent.coordinate.latitude,
+      lng: e.nativeEvent.coordinate.longitude,
+    });
+  };
+
+  let markerCoordinates;
+  if (selectedLocation) {
+    markerCoordinates = {
+      latitude: selectedLocation.lat,
+      longitude: selectedLocation.lng,
+    };
+  }
+
+  const savePickedLocation = useCallback(() => {
+    if (!selectedLocation) {
+      // could show alert if you want to
+      return;
+    }
+    props.navigation.navigate("NewPlace", { pickedLocation: selectedLocation });
+  }, [selectedLocation]);
+
+  useEffect(() => {
+    props.navigation.setParams({ saveLocation: savePickedLocation });
+  }, [savePickedLocation]);
   return (
-    <View>
-      <Text>MapScreen</Text>
-    </View>
+    <MapView
+      region={mapRegion}
+      style={styles.map}
+      onPress={selectLocationHandler}
+    >
+      {markerCoordinates && (
+        <Marker title="Picked Location" coordinate={markerCoordinates}></Marker>
+      )}
+    </MapView>
   );
 };
 
-const styles = StyleSheet.create({});
+MapScreen.navigationOptions = (navData) => {
+  const saveFn = navData.navigation.getParam("saveLocation");
+  return {
+    headerRight: () => (
+      <TouchableOpacity style={styles.headerButton} onPress={saveFn}>
+        <Text style={styles.headerButtonText}>Save</Text>
+      </TouchableOpacity>
+    ),
+  };
+};
+
+const styles = StyleSheet.create({
+  map: {
+    flex: 1,
+  },
+  headerButton: {
+    marginHorizontal: 20,
+  },
+  headerButtonText: {
+    fontSize: 16,
+    color: Platform.OS === "android" ? "white" : Colors.primary,
+  },
+});
 
 export default MapScreen;
