@@ -64,7 +64,7 @@ const NewPlaceScreen = (props) => {
 
 NewPlaceScreen.navigationOptions = (navData) => {
   return {
-    headerTitle: "Add Place",
+    headerTitle: "Add New Place",
   };
 };
 
