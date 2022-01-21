@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { AuthNavigator, ShopNavigator } from "./ShopNavigator";
 
-import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
 import StartupScreen from "../screens/StartupScreen";
 
 const AppNavigator = (props) => {
